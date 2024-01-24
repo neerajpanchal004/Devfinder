@@ -8,59 +8,74 @@ import Image from 'next/image';
 // import Mode from "./Mode";
 import Darkmode from "../Darkmode";
 import React, { useEffect, useState } from 'react'
+import { cleanDistDir } from "../../../next.config";
 // import Darkmode from "../Darkmode";
 
 const Data = () => {
-  const [username, setUsername] = useState(null)
+  const [username, setUsername] = useState(0)
   const [object, setObject] = useState([])
+  // const [repos, setRepos] = useState(0)
+  // const a = object.repos;
 
 
-  async function fetchdata() {
-    try {
-      let data = await fetch(`https://api.github.com/users/${username}`)
-      data = await data.json();
-      const obj = {
+  
+      async function fetchdata() {
+        try {
+            let data = await fetch(`https://api.github.com/users/${username}`)
+          
+          data = await data.json();
+          const obj = {
 
-        avatar: data.avatar_url,
-        name: data.name,
-        login: data.login,
-        bio: data.bio,
-        followers: data.followers,
-        following: data.following,
-        email: data.email,
-        location: data.location,
-        created: data.created_at,
-        twitter: data.twitter_username,
-        campany: data.company,
-        repos: data.repos_url,
-        url: data.url,
-        portfolio: data.blog,
-        html_url: data.html_url
-
-
-      }
-
-      console.log(data)
+            avatar: data.avatar_url,
+            name: data.name,
+            login: data.login,
+            bio: data.bio,
+            followers: data.followers,
+            following: data.following,
+            email: data.email,
+            location: data.location,
+            created: data.created_at,
+            twitter: data.twitter_username,
+            campany: data.company,
+            repos: data.repos_url,
+            url: data.url,
+            portfolio: data.blog,
+            html_url: data.html_url
 
 
-      setObject(obj)
+          }
+          setObject(obj)
+          // repodata()
 
 
+         
 
-    } catch (error) {
-      console.log(error)
-    }
 
+        } catch (error) {
+          console.log(error)
+        }
+
+      
   }
+  
+  // function repodata(){
+  //   let repo =  fetch(`a`)
+  //   repocount = repo.json();
+  //   console.log(repocount)
+  //   // repocount.map((e)=>setRepos(e))
+  // }
 
-
-  useEffect(() => {
+  useEffect(()=> {
     fetchdata()
+    
+
   }, [])
+ 
+
+ 
 
 
-
-
+// console.log(repodata)
 
   return (
     <>
@@ -88,7 +103,7 @@ const Data = () => {
               />
 
             </div>
-            <button className="px-2 bg-blue-600 rounded-lg py-1" onClick={fetchdata}>click me</button>
+            <button className="px-2 bg-blue-600 rounded-lg py-1 font-semibold" onClick={fetchdata}>click me</button>
 
 
 
@@ -97,6 +112,10 @@ const Data = () => {
 
 
           {/* content */}
+          {
+            (username !== 0 || '') &&
+         
+
           < div className=' rounded-lg p-5 bg-white dark:bg-slate-900' >
             <div className="flex-cols sm:flex gap-5 items-center">
               <div>
@@ -107,7 +126,7 @@ const Data = () => {
               <div>
                 <h2>{object.name}</h2>
                 <a className="text-blue-600" href={object.html_url}><p> {"@"}{object.login}</p></a>
-                <p>{new Date (object.created).toDateString()}</p>
+                <p>{new Date(object.created).toDateString()}</p>
 
               </div>
             </div>
@@ -121,13 +140,13 @@ const Data = () => {
 
               <div className="flex-cols text-center gap-1 ">
                 <p>followers</p>
-                <p>{object.followers}</p>
+                <p className="font-bold">{object.followers}</p>
               </div>
 
 
               <div className="flex-cols text-center  gap-1">
                 <p>following</p>
-                <p>{object.following}</p>
+                <p className="font-bold">{object.following}</p>
               </div>
 
             </div>
@@ -142,7 +161,7 @@ const Data = () => {
 
               <div className="flex items-center w-1/2 gap-1 my-1 ">
                 <FaLink size={20} />
-                {object.portfolio!=="" ?<a className="text-blue-600" href={object.portfolio}><p>Portfolio</p></a> :"Not available"}
+                {object.portfolio !== "" ? <a className="text-blue-600" href={object.portfolio}><p>Portfolio</p></a> : "Not available"}
 
               </div>
 
@@ -164,6 +183,9 @@ const Data = () => {
             </div>
 
           </div >
+           }
+          
+
           {/* content end */}
 
 
@@ -176,5 +198,6 @@ const Data = () => {
     </>
   )
 }
+
 
 export default Data
